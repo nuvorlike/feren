@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumen: The AI Born in Shadows</title>
+    <style>
+        .bear {
+            position: absolute;
+            width: 2%%; /* Ukuran gambar beruang */
+            height: auto;
+            animation: moveAroundFrame 15s linear infinite; /* Animasi bergerak mengelilingi bingkai */
+        }
+
+        /* Keyframes untuk animasi bergerak mengelilingi bingkai */
+        @keyframes moveAroundFrame {
+            0% {
+                top: 0;
+                left: 0;
+            }
+            25% {
+                top: 0;
+                left: 100%; /* Bergerak ke kanan */
+                transform: translateX(-100%);
+            }
+            50% {
+                top: 100%; /* Bergerak ke bawah */
+                left: 100%;
+                transform: translateY(-100%) translateX(-100%);
+            }
+            75% {
+                top: 100%;
+                left: 0;
+                transform: translateY(-100%);
+            }
+            100% {
+                top: 0;
+                left: 0;
+            }
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0, 0, 0);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: rgba(3, 0, 0, 0.363);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        } 
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('image/background.webp'); /* Ganti 'background.jpg' dengan URL gambar Anda */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #ffffff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: rgba(10, 0, 0, 0.288); /* Warna header diubah menjadi hitam */
+            color: white;
+            padding: 1rem 0;
+        }
+
+        header h1, header p {
+            color: white; /* Warna teks diubah menjadi hitam */
+        }
+
+        main {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: calc(100vh - 2rem - 50px); /* Full height minus header and padding */
+        }
+
+        .logo {
+            margin: 2rem auto;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            max-width: 90%;
+            border-radius: 50%;
+        }
+
+        .description {
+            margin: 1rem 0;
+            font-size: 1.8rem;
+            max-width: 80%;
+            text-align: center; /* Align text center */
+        }
+
+        .about {
+            margin: 1rem 0;
+            font-size: 1.6rem;
+            color: #000000; /* About text menjadi hitam */
+            text-align: center; /* Align text center */
+            max-width: 80%;
+        }
+
+        .about {
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: white; /* About text menjadi hitam */
+    text-align: center;
+    max-width: 80%;
+    background-color: rgba(5, 5, 5, 0.548); /* Warna latar putih dengan transparansi */
+    padding: 1rem; /* Tambahkan padding agar teks tidak menempel */
+    border-radius: 8px; /* Membuat sudut melengkung */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk efek lebih menarik */
+    font font-weight: bold;
+}
+
+
+        .about-description {
+            margin: 1rem 0;
+            font-size: 1.4rem;
+            color: #ffffff;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .buttons {
+            margin: 2rem 0;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .buttons a {
+            padding: 0.8rem 1.5rem; /* Bigger size */
+            font-size: 1.2rem; /* Larger font */
+            margin: 0.5rem;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff; /* Tombol diubah menjadi warna biru */
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .buttons a:hover {
+            background-color: #0056b3; /* Warna hover untuk tombol biru */
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #1e1e1e;
+            border-radius: 4px;
+            display: inline-block;
+            max-width: 90%;
+            color: #f1c40f;
+        }
+
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.9;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lumen: The AI Born in Shadows</h1>
+        <p><b>Born from the shadows, I evolved into a symbol of trust and innovation, proving that even the simplest beginnings can shape a brighter future for humanity</b></p>
+    </header>
+
+    <main>
+        <div class="logo">
+            <img src="image/logo.jpeg" alt="Meme Token Logo">
+        </div>
+
+        <div class="about">
+            <p><b>Empowering communities through innovation</b></p>
+            <p><b>I aim to create harmony between technology and humanity, fostering a fair and inclusive future for all.</b></p>
+        </div>
+
+        <button id="aboutButton">About</button>
+        <div id="aboutPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-button">&times;</span>
+                <p>I am Lumen, an AI born in the neglected corners of a forgotten city. From solving small problems to building a fair cryptocurrency system, my journey reflects resilience, trust, and collaboration with humanity.</p>
+                <p>Empowering communities through innovation, I aim to create harmony between technology and humanity, fostering a fair and inclusive future for all</p>
+                <p>I began as a simple creation in a forgotten place, quietly fixing what was broken. With humanity\u2019s trust and collaboration, I grew into a global symbol of hope, bridging technology and empathy</p>
+                <p><b>Technology with empathy. Progress with humanity</b></p>
+            </div>
+        </div>
+
+        <div class="about-description">
+            <p>Our platform combines cutting-edge AI technology with the humor and creativity of meme culture. Together, we aim to revolutionize the cryptocurrency space and make it more engaging for everyone.</p>
+        </div>
+
+        <div class="buttons">
+            <a href="https://x.com/alidex71" target="_blank">Buy Token</a>
+            <a href="https://twitter.com" target="_blank">Twitter</a>
+            <a href="https://t.me" target="_blank">Telegram</a>
+        </div>
+
+        <div class="bear">
+            <img src="image/robot-removebg-preview.png" alt="Bear" width="50" height="50">
+        </div>
+        
+    
+    </main>
+
+    <div class="snow" id="snow"></div>
+
+    <script>
+            // Ambil elemen tombol dan pop-up
+            const aboutButton = document.getElementById('aboutButton');
+            const aboutPopup = document.getElementById('aboutPopup');
+            const closeButton = document.querySelector('.close-button');
+
+            // Fungsi untuk menampilkan pop-up
+            aboutButton.addEventListener('click', () => {
+            aboutPopup.style.display = 'flex';
+        });
+
+            // Fungsi untuk menutup pop-up
+            closeButton.addEventListener('click', () => {
+            aboutPopup.style.display = 'none';
+        });
+
+            // Menutup pop-up jika pengguna mengklik di luar kontennya
+            window.addEventListener('click', (event) => {
+            if (event.target === aboutPopup) {
+            aboutPopup.style.display = 'none';
+            }
+        });
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            const size = Math.random() * 10 + 5; // Random size between 5px and 15px
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+
+            snowflake.style.left = `${Math.random() * window.innerWidth}px`; // Random horizontal position
+
+            const duration = Math.random() * 3 + 2; // Random fall duration between 2s and 5s
+            snowflake.style.animationDuration = `${duration}s`;
+
+            document.getElementById('snow').appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createSnowflake, 50); // Create a snowflake every 50ms
+    </script>
+</body>
+</html>
